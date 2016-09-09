@@ -1,0 +1,13 @@
+username {{ local_admin }} password {{ local_admin_hash }} 
+enable secret 4 {{ enable_hash }}
+
+aaa new-model 
+aaa authentication login default tacacs+ local 
+aaa authentication login no_tacacs none
+aaa authorization exec default tacacs+ if-authenticated
+aaa authorization exec default tacacs+ if-authenticated
+aaa authorization network default tacacs+ if-authenticated
+aaa authorization network default tacacs+ if-authenticated
+aaa accounting network default start-stop tacacs+
+aaa accounting exec default start-stop tacacs+
+aaa account commands 15 default start-stop group tacacs+

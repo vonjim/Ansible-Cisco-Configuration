@@ -1,11 +1,11 @@
 [HA_routers]
-10.3.20.254
+10.1.2.2
 
-[single_site_routers]
-10.3.25.254
+[non_HA_routers]
+10.1.2.3
 
 [all_routers:children]
-single_site_routers
+non_HA_routers
 HA_routers
 
 [site_switch]
@@ -16,4 +16,9 @@ HA_routers
 
 
 [all_switches:children]
-stacked_switches
+site_switch
+
+
+[all_devices:children]
+all_routers
+all_switches

@@ -1,3 +1,19 @@
 ---
-- hosts: routers
-    
+- hosts: all_routers
+  gather_facts: no
+#  vars_files: 
+#  - group_vars/passwords
+#  - group_vars/ip_addresses
+  vars_prompt: 
+  - name: ansible_user
+    prompt: "Username"
+    default: "vagrant"
+    private: no
+  - name: ansible_ssh_pass
+    prompt: "Password"
+    private: yes
+  tasks: 
+  - debug: msg="Username is {{ ansible_user }}, pwd is {{ ansible_ssh_pass }}."
+  - ping:  
+    register: pong
+  - debug: msg="{{ pong.ping }}"
