@@ -1,0 +1,13 @@
+
+line vty 0 4
+login authentication default
+transport input telnet ssh
+timeout login response 15
+logging synchronous
+exec-timeout 15 0
+! 
+line con 0 
+login authentication no_tacacs
+privilege level 15
+logging synchronous
+!

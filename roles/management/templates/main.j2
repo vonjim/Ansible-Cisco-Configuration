@@ -1,0 +1,15 @@
+{% include "services.j2" %}
+hostname {{ inventory_hostname }}
+!
+logging buffered 4096 debugging
+{% include "aaa.j2" %}
+
+{% include "dns.j2" %}
+
+{% include "ntp.j2" %}
+
+{% include "vty.j2" %}
+
+{% include "tacacs.j2" %}
+
+{% include "banner.j2" %}

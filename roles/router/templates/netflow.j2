@@ -1,0 +1,9 @@
+ip flow-export source Loopback0
+ip flow-export version 9
+ip flow-export destination {{netflow_server}} {{netflow_server_port}}
+ip flow-cache timeout active 1
+ip flow-cache timeout inactive 15
+ip flow-top-talkers
+top 200
+sort-by bytes
+

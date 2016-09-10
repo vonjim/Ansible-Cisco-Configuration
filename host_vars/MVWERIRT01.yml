@@ -1,0 +1,15 @@
+---
+interfaces:
+  g0/0.5: 
+    ip_addr: 10.3.25.254
+    ip_subnet: 255.255.255.0
+  g0/0.53:
+    ip_addr: 10.3.26.254
+    ip_subnet: 255.255.255.0
+  g0/1:
+    ip_addr: 10.77.25.6
+    ip_subnet: 255.255.255.252
+  loopback0:
+    ip_addr: 10.253.26.35
+    ip_subnet: 255.255.255.255
+

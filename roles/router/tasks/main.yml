@@ -1,0 +1,4 @@
+---
+
+- name: Create router specific configuration
+  template: src=main.j2 dest=./configs/temp/{{inventory_hostname}}.rtr
