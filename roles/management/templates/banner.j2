@@ -1,15 +1,15 @@
 banner login # 
 +------------------------------------------------------------------------+ 
 {{ inventory_hostname }}
-{% if 'RT01' not in '{{ inventory_hostname }}' %}
+{% if 'RT01' in '{{ inventory_hostname }}' %}
 Router configuration Template Version 1.5
 QoS version {{ qos_version }}
 {% endif %}
 Only authorised persons are allowed to access this equipment 
 Any unauthorised use is prohibited 
 For support and help, please contact: 
- Medical Centres IT Support (medical.it@primaryhealthcare.com.au)
- Phone 1300 779 633
+{{ lob }} IT Support ({{ lob_email }})
+ Phone {{ lob_phone }}
 +------------------------------------------------------------------------+ 
 # 
 
