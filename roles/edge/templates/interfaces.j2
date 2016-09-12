@@ -1,24 +1,44 @@
-{% for intf in interfaces %}
-interface {{ intf.id }}
-description {{ intf.description }}
-{% if intf.bandwidth is defined %}
-bandwidth {{ intf.bandwidth }}
+{% for item in interfaces %}
+interface {{ item.intf }}
+description {{ item.description }}
+
+{% if item.intf != 'loopback0' %}
+speed {{ item.speed|default('auto') }}
+duplex {{ item.duplex|default('auto') }}
+ip route-cache flow 
+
+{% if item.bandwidth is defined %}
+bandwidth {{ item.bandwidth }}
 {% endif %}
-{% if intf.ip_address is defined %}
-ip address {{ intf.ip_address| ipaddr('address') }} {{ intf.ip_address| ipaddr('netmask') }}
+
+{% if item.ip_address is defined -%}
+ip address {{ item.ip_address| ipaddr('address') }} {{ item.ip_address| ipaddr('netmask') }}
+max-reserved-bandwidth 100
+ip flow ingress
+ip flow egress
+ip nbar protocol-discovery 
+service-policy output qos-out 
+no shutdown
 {% else %} 
 no ip address 
-{% if intf.vlans is defined -%} 
-{% for vlan in intf.vlans %}
-interface {{ intf }}.{{ vlan }}
+no shutdown
+!
+{% if item.vlans is defined %} 
+{% for vlan in item.vlans %}
+interface {{ item.intf }}.{{ vlan.vlan_number }}
+ip address {{ vlan.ip_address| ipaddr('address') }} {{ vlan.ip_address| ipaddr('netmask') }}
 description {{ vlan.description }}
-encapsulation dot1Q {{ vlan.vlan }} 
+encapsulation dot1Q {{ vlan.vlan_number }} 
 {% if vlan.ip_helper is defined -%} 
 ip helper-address {{ vlan.ip_helper }} 
 {% endif %}
+service-policy input qos-in 
+!
 {% endfor %}
 {% endif %}
+{% endif %} 
+{% else %} 
+ip address {{ item.ip_address| ipaddr('address') }} 255.255.255.255
 {% endif %}
-no shutdown
-
+!
 {% endfor %}

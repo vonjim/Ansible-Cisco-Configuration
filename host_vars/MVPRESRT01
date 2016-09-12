@@ -3,26 +3,27 @@ device_type: Router
 device_id: 1
 
 interfaces: 
-  - id: f0/1
+  - intf: f0/1
     ip_address: 10.222.27.254/30
     description: "WAN (CID: 1123 131 1321)"
     bandwidth: 3000
-  - id: f0/0
+    speed: 100000
+  - intf: f0/0
     description: LAN Interface
     vlans: 
-        - vlan: 5
+        - vlan_number: 5
           ip_address: 10.3.28.254/24 
           description: Data VLAN
-        - vlan: 55
+        - vlan_number: 55
           ip_address: 10.3.29.254/24
           description: Wireless VLAN
           ip_helper: 10.3.28.1
-        - vlan: 3
+        - vlan_number: 3
           ip_address: 10.3.30.254/24
           description: Legacy VLAN
           ip_helper: 10.3.28.1
-  - id: loopback0
-    ip_address: 10.3.2.24/32
+  - intf: loopback0
+    ip_address: 10.3.2.1/32
     description: "123 Fake St, Preston, VIC, 3072"
 
 site_code: MVPRES
