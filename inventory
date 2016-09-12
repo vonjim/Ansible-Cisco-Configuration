@@ -1,8 +1,9 @@
 [HA_routers]
-MVWERIRT01 ansible_host=10.1.2.2
+MVPRESRT01
 
 [non_HA_routers]
-MVELSTRT01 ansible_host=10.1.2.3
+PVELSTRT01 ansible_host=10.1.2.3
+MVWERIRT01 ansible_host=10.1.2.2
 
 [all_routers:children]
 non_HA_routers

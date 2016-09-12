@@ -1,0 +1,16 @@
+---
+MVWERI: 
+    name: werribee center
+    address: 123 high st
+    town: werribee
+    postcode: 3856
+    state: VIC
+    lob: MC
+
+PVELST:
+    name: elsternwick pathology
+    address: 124 main st
+    town: elsternwick
+    postcode: 3878
+    state: VIC
+    lob: path

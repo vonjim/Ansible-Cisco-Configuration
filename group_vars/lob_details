@@ -1,0 +1,11 @@
+---
+
+MC: 
+    lob_name: Medical Centers
+    lob_email: med.it@email.com
+    lob_phone: 01 2326 2589
+
+path:
+    lob_name: Pathology
+    lob_email: path.it@email.com
+    lob_phone: 02 2456 2456

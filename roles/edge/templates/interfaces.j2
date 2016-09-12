@@ -1,0 +1,24 @@
+{% for intf in interfaces %}
+interface {{ intf.id }}
+description {{ intf.description }}
+{% if intf.bandwidth is defined %}
+bandwidth {{ intf.bandwidth }}
+{% endif %}
+{% if intf.ip_address is defined %}
+ip address {{ intf.ip_address| ipaddr('address') }} {{ intf.ip_address| ipaddr('netmask') }}
+{% else %} 
+no ip address 
+{% if intf.vlans is defined -%} 
+{% for vlan in intf.vlans %}
+interface {{ intf }}.{{ vlan }}
+description {{ vlan.description }}
+encapsulation dot1Q {{ vlan.vlan }} 
+{% if vlan.ip_helper is defined -%} 
+ip helper-address {{ vlan.ip_helper }} 
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endif %}
+no shutdown
+
+{% endfor %}

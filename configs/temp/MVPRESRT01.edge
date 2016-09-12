@@ -1,0 +1,28 @@
+interface f0/1
+description WAN (CID: 1123 131 1321)
+bandwidth 3000
+ip address 10.222.27.254 255.255.255.252
+no shutdown
+
+interface f0/0
+description LAN Interface
+ 
+no ip address 
+interface {u'vlans': [{u'vlan': 5, u'ip_address': u'10.3.28.254/24', u'description': u'Data VLAN'}, {u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.29.254/24', u'description': u'Wireless VLAN', u'vlan': 55}, {u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.30.254/24', u'description': u'Legacy VLAN', u'vlan': 3}], u'id': u'f0/0', u'description': u'LAN Interface'}.{u'vlan': 5, u'ip_address': u'10.3.28.254/24', u'description': u'Data VLAN'}
+description Data VLAN
+encapsulation dot1Q 5 
+interface {u'vlans': [{u'vlan': 5, u'ip_address': u'10.3.28.254/24', u'description': u'Data VLAN'}, {u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.29.254/24', u'description': u'Wireless VLAN', u'vlan': 55}, {u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.30.254/24', u'description': u'Legacy VLAN', u'vlan': 3}], u'id': u'f0/0', u'description': u'LAN Interface'}.{u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.29.254/24', u'description': u'Wireless VLAN', u'vlan': 55}
+description Wireless VLAN
+encapsulation dot1Q 55 
+ip helper-address 10.3.28.1 
+interface {u'vlans': [{u'vlan': 5, u'ip_address': u'10.3.28.254/24', u'description': u'Data VLAN'}, {u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.29.254/24', u'description': u'Wireless VLAN', u'vlan': 55}, {u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.30.254/24', u'description': u'Legacy VLAN', u'vlan': 3}], u'id': u'f0/0', u'description': u'LAN Interface'}.{u'ip_helper': u'10.3.28.1', u'ip_address': u'10.3.30.254/24', u'description': u'Legacy VLAN', u'vlan': 3}
+description Legacy VLAN
+encapsulation dot1Q 3 
+ip helper-address 10.3.28.1 
+no shutdown
+
+interface loopback0
+description 123 Fake St, Preston, VIC, 3072
+ip address 10.3.2.24 
+no shutdown
+

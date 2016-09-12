@@ -1,0 +1,56 @@
+service timestamps debug datetime localtime show-timezone 
+service timestamps log datetime localtime show-timezone
+service password-encryption
+hostname PVELSTRT01
+!
+logging buffered 4096 debugging
+username hcadmin password 7 046F03471C161D42052E55051959 
+enable secret 4 OLmARYCsUsaOP0xaCsyCtsqWwo/ZqnWqQyFi1AEjAFU
+
+aaa new-model 
+aaa authentication login default tacacs+ local 
+aaa authentication login no_tacacs none
+aaa authorization exec default tacacs+ if-authenticated
+aaa authorization exec default tacacs+ if-authenticated
+aaa authorization network default tacacs+ if-authenticated
+aaa authorization network default tacacs+ if-authenticated
+aaa accounting network default start-stop tacacs+
+aaa accounting exec default start-stop tacacs+
+aaa account commands 15 default start-stop group tacacs+
+
+ip domain-list hc.int
+ip domain-list pry.com.au
+ip domain-name hc.int
+ip name-server 10.1.17.6
+ip name-server 10.1.11.6
+
+
+ntp server 10.1.1.1
+ntp server 10.1.1.2
+
+line vty 0 4
+login authentication default
+transport input telnet ssh
+timeout login response 15
+logging synchronous
+exec-timeout 15 0
+! 
+line con 0 
+login authentication no_tacacs
+privilege level 15
+logging synchronous
+!
+tacacs server HCTACACS
+ address ipv4 10.122.254.30
+ key Pr1maryACS
+ timeout 5
+banner login # 
++------------------------------------------------------------------------+ 
+PVELSTRT01
+Only authorised persons are allowed to access this equipment 
+Any unauthorised use is prohibited 
+For support and help, please contact: 
+"MC"
+med.it@email.com
++------------------------------------------------------------------------+ 
+# 

@@ -1,5 +1,0 @@
----
-
-- name: Create management configuration portion
-  template: src=main.j2 dest=./configs/temp/{{inventory_hostname}}.mgmt
-
