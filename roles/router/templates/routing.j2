@@ -1,0 +1,24 @@
+{% for protocol in routing_protocols %}
+router {{ protocol }}
+{% if protocol == 'rip' %}
+redistribute static
+version 2
+passive-interface 
+network 10.0.0.0
+distribute-list noroutesout out
+default-metric 1
+no auto-summary
+{% endif %}
+!
+{% if protocol == 'bgp' %}
+ip bgp neighbour 10.1.1.1
+{% endif %}{% endfor %}
+!
+!
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 {{ default_gateway }}
+!
+ip access-list standard noroutesout
+deny 0.0.0.0
+permit any
+!

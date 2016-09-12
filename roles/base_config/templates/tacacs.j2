@@ -2,3 +2,4 @@ tacacs server HCTACACS
  address ipv4 {{ tacacs_server }}
  key {{ tacacs_key }}
  timeout 5
+ip tacacs source-interface{% if device_type == 'Switch' %} vlan 5 {% else %} loopback0 {% endif %}

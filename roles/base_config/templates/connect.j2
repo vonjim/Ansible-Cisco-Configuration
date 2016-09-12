@@ -1,4 +1,10 @@
-
+crypto key generate rsa modulus 2048
+ip ssh authentication-retries 3
+ip ssh version 2
+!
+no ip http server
+no ip http secure-server
+!
 line vty 0 4
 login authentication default
 transport input telnet ssh

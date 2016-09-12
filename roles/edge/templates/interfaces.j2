@@ -1,16 +1,18 @@
 {% for item in interfaces %}
+
+{# Configuration common among all interfaces #}
 interface {{ item.intf }}
 description {{ item.description }}
 
+{# Configuration common among all non loopback interfaces #}
 {% if item.intf != 'loopback0' %}
 speed {{ item.speed|default('auto') }}
 duplex {{ item.duplex|default('auto') }}
 ip route-cache flow 
-
-{% if item.bandwidth is defined %}
-bandwidth {{ item.bandwidth }}
+{% if item.bandwidth is defined %}bandwidth {{ item.bandwidth }}
 {% endif %}
 
+{# Configuration common to physical interfaces where IP address is defined (WAN interface) #}
 {% if item.ip_address is defined -%}
 ip address {{ item.ip_address| ipaddr('address') }} {{ item.ip_address| ipaddr('netmask') }}
 max-reserved-bandwidth 100
@@ -19,26 +21,35 @@ ip flow egress
 ip nbar protocol-discovery 
 service-policy output qos-out 
 no shutdown
+
+{# Configure physical interfaces where no IP address is defined (LAN interface) #}
 {% else %} 
 no ip address 
 no shutdown
-!
-{% if item.vlans is defined %} 
+!{% if item.vlans is defined %} 
+
+{# Configure sub interfaces if they exist #}
 {% for vlan in item.vlans %}
-interface {{ item.intf }}.{{ vlan.vlan_number }}
+interface {{ item.intf }}.{{ vlan.vlan_number| default('1') }}
 ip address {{ vlan.ip_address| ipaddr('address') }} {{ vlan.ip_address| ipaddr('netmask') }}
 description {{ vlan.description }}
 encapsulation dot1Q {{ vlan.vlan_number }} 
-{% if vlan.ip_helper is defined -%} 
-ip helper-address {{ vlan.ip_helper }} 
+{% if vlan.ip_helper is defined %}ip helper-address {{ vlan.ip_helper }}
 {% endif %}
-service-policy input qos-in 
+service-policy input qos-in
+
+{# If HA router setup add configuration on first iteration or VLAN (Primary VLAN) #}
+{% if ha %}{% if loop.first %}
+standby {{ vlan.vlan_number }} ip {{ vlan.ip_address | ipaddr('address') }}
+standby {{ vlan.vlan_number }} preempt
+standby {{ vlan.vlan_number }} name HSRP-VLAN-{{ vlan.vlan_number }} 
+{% if device_id == 1 %}
+standby {{ vlan.vlan_number }} priority 90
+standby {{ vlan.vlan_number }} track 130 de 50
+{% endif %}{% endif %}{% endif %}
 !
-{% endfor %}
-{% endif %}
-{% endif %} 
+{% endfor %}{% endif %}{% endif %} 
 {% else %} 
+{# This is specific to loopback inteface only #}
 ip address {{ item.ip_address| ipaddr('address') }} 255.255.255.255
-{% endif %}
-!
-{% endfor %}
+{% endif %}!{% endfor %}

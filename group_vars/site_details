@@ -14,3 +14,11 @@ PVELST:
     postcode: 3878
     state: VIC
     lob: path
+
+MVPRES: 
+    name: preston center
+    address: 124 high st
+    town: preston
+    postcode: 3088
+    state: VIC
+    lob: MC

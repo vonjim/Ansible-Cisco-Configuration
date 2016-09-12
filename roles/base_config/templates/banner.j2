@@ -1,15 +1,14 @@
-banner login # 
+!
+banner login ^
 +------------------------------------------------------------------------+ 
 {{ inventory_hostname }}
-{% if 'RT0' in '{{ inventory_hostname }}' %}
-Router configuration Template Version 1.5
+{% if device_type == 'Router' %}
 QoS version {{ qos_version }}
 {% endif %}
 Only authorised persons are allowed to access this equipment 
 Any unauthorised use is prohibited 
 For support and help, please contact: 
-{{ dict(MVWERI.lob).lob_email }}
-{{ MC.lob_email }}
+
 +------------------------------------------------------------------------+ 
-# 
+^
 

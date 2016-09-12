@@ -1,10 +1,10 @@
+
 interface f0/1
 description WAN (CID: 1123 131 1321)
 
 speed 100000
 duplex auto
 ip route-cache flow 
-
 bandwidth 3000
 
 ip address 10.222.27.254 255.255.255.252
@@ -14,6 +14,7 @@ ip flow egress
 ip nbar protocol-discovery 
 service-policy output qos-out 
 no shutdown
+
  
 !
 interface f0/0
@@ -23,31 +24,36 @@ speed auto
 duplex auto
 ip route-cache flow 
 
-
  
 no ip address 
 no shutdown
-!
- 
+! 
+
 interface f0/0.5
 ip address 10.3.28.254 255.255.255.0
 description Data VLAN
 encapsulation dot1Q 5 
-service-policy input qos-in 
+service-policy input qos-in
+
+standby 5 ip 10.3.28.254
+standby 5 preempt
+standby 5 name HSRP-VLAN-5 
 !
 interface f0/0.55
 ip address 10.3.29.254 255.255.255.0
 description Wireless VLAN
 encapsulation dot1Q 55 
-ip helper-address 10.3.28.1 
-service-policy input qos-in 
+ip helper-address 10.3.28.1
+service-policy input qos-in
+
 !
 interface f0/0.3
 ip address 10.3.30.254 255.255.255.0
 description Legacy VLAN
 encapsulation dot1Q 3 
-ip helper-address 10.3.28.1 
-service-policy input qos-in 
+ip helper-address 10.3.28.1
+service-policy input qos-in
+
 !
  
 !

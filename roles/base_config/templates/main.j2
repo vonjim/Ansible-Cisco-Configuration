@@ -2,13 +2,20 @@
 hostname {{ inventory_hostname }}
 !
 logging buffered 4096 debugging
+clock timezone AEST +10
+clock summer-time AEDT recurring 1 Sun Oct 2:00 1 Sun Apr 2:00
+
 {% include "aaa.j2" %}
+
+ip tftp source-interface{% if device_type == 'Switch' %} vlan 5 {% else %} loopback0 {% endif %}
 
 {% include "dns.j2" %}
 
 {% include "ntp.j2" %}
 
-{% include "vty.j2" %}
+{% include "snmp.j2" %}
+
+{% include "connect.j2" %}
 
 {% include "tacacs.j2" %}
 

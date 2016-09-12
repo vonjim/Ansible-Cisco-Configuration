@@ -55,7 +55,7 @@ shape average percent 90
 service-policy qos-child
 
 ip access-list extended QOS-gold-rT
-remark ---- QoS ver 2.7 ---- Gold-rT --- (10%)
+remark ---- QoS ver {{ qos_version }} ---- Gold-rT --- (10%)
 remark ACL for H.225
 permit tcp any any eq 2099
 permit tcp any eq 2099 any
@@ -84,7 +84,7 @@ permit tcp any eq 2727 any
 !
 
 ip access-list extended QOS-gold-nRT
-remark ---- QoS ver 2.7 ---- Gold-nRT --- (10%)
+remark ---- QoS ver {{ qos_version }} ---- Gold-nRT --- (10%)
 remark ACL for TACACS
 permit tcp any any eq tacacs
 permit tcp any eq tacacs any
@@ -180,7 +180,7 @@ permit tcp any eq 5888 any
 !
 
 ip access-list extended QOS-silver-nRT3
-remark ---- QoS ver 2.7 ---- Silver-nRT3 --- (25%)
+remark ---- QoS ver {{ qos_version }} ---- Silver-nRT3 --- (25%)
 remark ACL for Promed Appts
 permit tcp any any eq 3050
 permit tcp any eq 3050 any
@@ -291,7 +291,7 @@ permit tcp any range 27100 27199 any
 !
 
 ip access-list extended QOS-silver-nRT2
-remark ---- QoS ver 2.7 ---- Silver-nRT2 --- (25%)
+remark ---- QoS ver {{ qos_version }} ---- Silver-nRT2 --- (25%)
 remark ACL for Winscribe
 permit tcp any any eq 3147
 permit tcp any eq 3147 any
@@ -350,7 +350,7 @@ permit tcp any range 1505 1510 any
 !
 
 ip access-list extended QOS-silver-nRT1
-remark ---- QoS ver 2.7 ---- Silver-nRT1 --- (15%)
+remark ---- QoS ver {{ qos_version }} ---- Silver-nRT1 --- (15%)
 remark ACL for web proxy
 permit tcp any any eq 8080
 permit tcp any eq 8080 any
@@ -397,7 +397,7 @@ permit udp any eq 9996 any
 !
 
 ip access-list extended QOS-bronze
-remark ---- QoS ver 2.7 ---- Bronze --- (10%)
+remark ---- QoS ver {{ qos_version }} ---- Bronze --- (10%)
 remark Default ACL (Bronze) - most discard eligible
 permit ip any any
 !

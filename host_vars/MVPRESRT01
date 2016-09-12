@@ -1,6 +1,9 @@
 ---
 device_type: Router
-device_id: 1
+device_id: 2
+ha: True
+routing_protocols: 
+  - rip
 
 interfaces: 
   - intf: f0/1
@@ -23,10 +26,12 @@ interfaces:
           description: Legacy VLAN
           ip_helper: 10.3.28.1
   - intf: loopback0
-    ip_address: 10.3.2.1/32
+    ip_address: 10.3.2.1
     description: "123 Fake St, Preston, VIC, 3072"
 
 site_code: MVPRES
 site_name: Preston Center
 address: "123 Fake St, Preston, VIC, 3072"
-
+default_gateway: 10.122.27.253
+lob: Medical Center
+lob_email: mcit@mail.com

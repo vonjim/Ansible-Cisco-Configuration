@@ -1,4 +1,30 @@
-ip flow-export source Loopback0
+ip cef
+! 
+! Policy-map placeholders.  Written over at config compilation
+policy-map qos-child
+policy-map qos-out
+
+ip arp proxy disable
+router rip
+redistribute static
+version 2
+passive-interface 
+network 10.0.0.0
+distribute-list noroutesout out
+default-metric 1
+no auto-summary
+!
+!
+!
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 10.122.27.253
+!
+ip access-list standard noroutesout
+deny 0.0.0.0
+permit any
+! 
+
+ip flow-export source loopback0
 ip flow-export version 9
 ip flow-export destination 10.122.92.10 9996
 ip flow-cache timeout active 1

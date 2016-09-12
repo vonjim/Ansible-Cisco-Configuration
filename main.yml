@@ -16,6 +16,6 @@
 #    prompt: "Password"
 #    private: yes
   roles:
-#  - base_config
-#  - router
+   - base_config
+   - router
    - edge
