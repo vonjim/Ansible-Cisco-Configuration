@@ -1,3 +1,99 @@
+ip cef
+! 
+! Policy-map placeholders.  Written over at config compilation
+policy-map qos-child
+policy-map qos-out
+
+ip arp proxy disable
+
+!
+!
+interface f0/1
+  description WAN (CID: 1123 131 1321)
+  ip address 10.222.27.254 255.255.255.252
+  
+  speed 100000
+  duplex auto
+  ip route-cache flow 
+  bandwidth 3000no shutdown
+  max-reserved-bandwidth 100
+  ip flow ingress
+  ip flow egress
+  ip nbar protocol-discovery 
+  service-policy output qos-out 
+!
+!
+interface f0/0
+  description LAN Interface
+  no ip address
+  
+  speed auto
+  duplex auto
+  ip route-cache flow 
+  no shutdown
+!
+!
+interface f0/0.5
+  ip address 10.3.28.254 255.255.255.0
+  description Data VLAN
+  encapsulation dot1Q 5 
+  service-policy input qos-in 
+  
+  standby 5 ip 10.3.28.254
+  standby 5 preempt
+  standby 5 name HSRP-VLAN-5 
+  !
+!
+interface f0/0.55
+  ip address 10.3.29.254 255.255.255.0
+  description Wireless VLAN
+  encapsulation dot1Q 55 
+  service-policy input qos-in 
+  ip helper-address 10.3.28.1
+  !
+!
+interface f0/0.3
+  ip address 10.3.30.254 255.255.255.0
+  description Legacy VLAN
+  encapsulation dot1Q 3 
+  service-policy input qos-in 
+  ip helper-address 10.3.28.1
+  !
+!
+interface loopback0
+  description 123 Fake St, Preston, VIC, 3072
+  ip address 10.3.2.1 
+  
+
+
+router rip
+redistribute static
+version 2
+passive-interface f0/1
+network 10.0.0.0
+distribute-list noroutesout out
+default-metric 1
+no auto-summary
+!
+!
+!
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 10.122.27.253
+!
+ip access-list standard noroutesout
+deny 0.0.0.0
+permit any
+! 
+
+ip flow-export source loopback0
+ip flow-export version 9
+ip flow-export destination 10.122.92.10 9996
+ip flow-cache timeout active 1
+ip flow-cache timeout inactive 15
+ip flow-top-talkers
+top 200
+sort-by bytes
+
 
 ! Class Maps
 class-map match-any network
@@ -56,7 +152,7 @@ shape average percent 90
 service-policy qos-child
 
 ip access-list extended QOS-gold-rT
-remark ---- QoS ver {{ qos_version }} ---- Gold-rT --- (10%)
+remark ---- QoS ver 2.7 ---- Gold-rT --- (10%)
 remark ACL for H.225
 permit tcp any any eq 2099
 permit tcp any eq 2099 any
@@ -85,7 +181,7 @@ permit tcp any eq 2727 any
 !
 
 ip access-list extended QOS-gold-nRT
-remark ---- QoS ver {{ qos_version }} ---- Gold-nRT --- (10%)
+remark ---- QoS ver 2.7 ---- Gold-nRT --- (10%)
 remark ACL for TACACS
 permit tcp any any eq tacacs
 permit tcp any eq tacacs any
@@ -181,7 +277,7 @@ permit tcp any eq 5888 any
 !
 
 ip access-list extended QOS-silver-nRT3
-remark ---- QoS ver {{ qos_version }} ---- Silver-nRT3 --- (25%)
+remark ---- QoS ver 2.7 ---- Silver-nRT3 --- (25%)
 remark ACL for Promed Appts
 permit tcp any any eq 3050
 permit tcp any eq 3050 any
@@ -292,7 +388,7 @@ permit tcp any range 27100 27199 any
 !
 
 ip access-list extended QOS-silver-nRT2
-remark ---- QoS ver {{ qos_version }} ---- Silver-nRT2 --- (25%)
+remark ---- QoS ver 2.7 ---- Silver-nRT2 --- (25%)
 remark ACL for Winscribe
 permit tcp any any eq 3147
 permit tcp any eq 3147 any
@@ -351,7 +447,7 @@ permit tcp any range 1505 1510 any
 !
 
 ip access-list extended QOS-silver-nRT1
-remark ---- QoS ver {{ qos_version }} ---- Silver-nRT1 --- (15%)
+remark ---- QoS ver 2.7 ---- Silver-nRT1 --- (15%)
 remark ACL for web proxy
 permit tcp any any eq 8080
 permit tcp any eq 8080 any
@@ -398,7 +494,7 @@ permit udp any eq 9996 any
 !
 
 ip access-list extended QOS-bronze
-remark ---- QoS ver {{ qos_version }} ---- Bronze --- (10%)
+remark ---- QoS ver 2.7 ---- Bronze --- (10%)
 remark Default ACL (Bronze) - most discard eligible
 permit ip any any
 !

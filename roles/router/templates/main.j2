@@ -5,6 +5,9 @@ policy-map qos-child
 policy-map qos-out
 
 ip arp proxy disable
+
+{% include "interfaces.j2" %}
+
 {% include "routing.j2" %} 
 
 {% include "netflow.j2" %}

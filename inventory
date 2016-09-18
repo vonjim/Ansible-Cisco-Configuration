@@ -1,13 +1,33 @@
-[HA_routers]
+[pry]
 MVPRESRT01
 
-[non_HA_routers]
+
+
+[mc_routers]
 PVELSTRT01 ansible_host=10.1.2.3
 MVWERIRT01 ansible_host=10.1.2.2
 
-[all_routers:children]
-non_HA_routers
-HA_routers
+[mc_switches]
+
+[dc_routers]
+
+[core_switches]
+
+
+[switches:children]
+mc_switches
+core_switches
+
+[routers:children]
+dc_routers
+mc_routers
+
+
 
 [all_devices:children]
-all_routers
+routers
+switches
+
+
+[jcnet]
+JCNETRT01

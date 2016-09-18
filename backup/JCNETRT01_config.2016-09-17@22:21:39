@@ -1,0 +1,367 @@
+Building configuration...
+
+Current configuration with default configurations exposed : 8057 bytes
+!
+version 12.4
+parser cache
+no service log backtrace
+no service config
+no service exec-callback
+no service nagle
+service slave-log
+no service slave-coredump
+no service pad to-xot
+no service pad from-xot
+no service pad cmns
+service pad
+no service telnet-zeroidle
+no service tcp-keepalives-in
+no service tcp-keepalives-out
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service exec-wait
+no service linenumber
+no service internal
+no service scripting
+no service compress-config
+service prompt config
+no service old-slip-prompts
+no service pt-vty-logging
+no service disable-ip-fast-frag
+no service sequence-numbers
+!
+hostname JCNETRT01
+!
+boot-start-marker
+boot-end-marker
+!
+logging exception 4096
+no logging count
+no logging message-counter log
+no logging message-counter debug
+logging message-counter syslog
+no logging snmp-authfail
+no logging userinfo
+logging buginf
+logging queue-limit 100
+logging queue-limit esm 0
+logging queue-limit trap 100
+logging buffered 0 debugging
+no logging persistent
+logging rate-limit console 10 except errors
+logging console guaranteed
+logging console debugging
+logging monitor debugging
+logging on
+enable secret 5 $1$Fwha$IeDyUFJZE3.L88UzAZxXE1
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+!
+!
+aaa session-id common
+errdisable detect cause all
+errdisable recovery interval 300
+dot11 syslog
+dot11 activity-timeout unknown default 60
+dot11 activity-timeout client default 60
+dot11 activity-timeout repeater default 60
+dot11 activity-timeout workgroup-bridge default 60
+dot11 activity-timeout bridge default 60
+dot11 aaa csid default
+prompt config hostname-length 20
+ip source-route
+ip arp proxy disable
+ip icmp redirect subnet
+ip spd queue threshold minimum 73 maximum 74
+!
+!
+no ip dhcp use vrf connected
+!
+ip dhcp pool VLAN9
+   network 10.1.9.0 255.255.255.0
+   domain-name jcnet.com.au
+   dns-server 8.8.8.8 
+   default-router 10.1.9.254 
+!
+ip dhcp pool VLAN10
+   network 10.1.10.0 255.255.255.0
+   default-router 10.1.10.254 
+   dns-server 10.1.1.254 8.8.8.8 
+   domain-name jcnet.com.au
+!
+ip dhcp pool VLAN11
+   network 10.1.11.0 255.255.255.0
+   domain-name jcnet.com.au
+   dns-server 10.1.1.254 8.8.8.8 
+   default-router 10.1.11.254 
+!
+ip dhcp pool VLAN8
+   network 10.1.8.0 255.255.255.0
+   dns-server 10.1.1.254 
+   domain-name jcnet.com.au
+   default-router 10.1.8.254 
+!
+!
+ip cef
+no ip domain lookup
+ip domain name jcnet.com.au
+ip name-server 10.1.1.254
+ip name-server 8.8.8.8
+ip name-server 8.8.8.7
+ip igmp snooping vlan 1
+ip igmp snooping vlan 1 mrouter learn pim-dvmrp
+ip igmp snooping
+multilink bundle-name authenticated
+!
+cwmp agent
+ no enable download
+ no enable
+ request outstanding 5
+ parameter change notify interval 60
+ session retry limit 11
+ management server username 00000C-CISCO1841V05-FHK122422LA
+ no management server password
+ no management server url
+ no provision code
+ no connection request username
+ no connection request password
+ no wan ipaddress
+!
+!
+!
+!
+!
+no snap notification exclude service acl
+no snap notification exclude service eem
+no snap notification exclude service snapt
+file prompt alert
+emm clear 1b5b324a1b5b303b30480d
+vtp file flash:vlan.dat
+vtp mode server
+vtp version 1
+username ******** password 0 ********
+username ******** password 0 ********
+archive
+ log config
+  no record rc
+  no logging enable
+  logging size 100
+  no notify syslog contenttype plaintext
+  no notify syslog contenttype xml
+  hidekeys
+ no path 
+ no rollback filter adaptive
+ rollback retry timeout 0
+scripting tcl low-memory 12659126
+scripting tcl trustpoint untrusted terminate
+no scripting tcl secure-mode
+!
+!
+ip ssh time-out 120
+ip ssh authentication-retries 3
+ip ssh break-string ~break
+ip ssh version 2
+ip ssh dh min size 1024
+!
+policy-map qos-child
+policy-map qos-out
+!
+!
+!
+!
+interface Loopback0
+ description 123 Fake St, Preston, VIC, 3072
+ ip address 10.3.2.1 255.255.255.252
+ ip redirects
+ ip proxy-arp
+ snmp trap link-status
+!
+interface FastEthernet0/0
+ description LAN Interface
+ no ip address
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ duplex auto
+ speed auto
+ snmp trap link-status
+!
+interface FastEthernet0/0.5
+ description Data VLAN
+ encapsulation dot1Q 5
+ ip address 10.3.28.254 255.255.255.0
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ no snmp trap link-status
+!
+interface FastEthernet0/0.8
+ description DMZ_VLAN
+ encapsulation dot1Q 8
+ ip address 10.1.8.254 255.255.255.0
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ ip nat inside
+ ip virtual-reassembly
+ no snmp trap link-status
+!
+interface FastEthernet0/0.9
+ description External_VLAN
+ encapsulation dot1Q 9
+ ip address 10.1.9.254 255.255.255.0
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ ip nat inside
+ ip virtual-reassembly
+ no snmp trap link-status
+!
+interface FastEthernet0/0.10
+ description HA_VLAN
+ encapsulation dot1Q 10
+ ip address 10.1.10.254 255.255.255.0
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ no snmp trap link-status
+!
+interface FastEthernet0/0.11
+ description Internal_VLAN
+ encapsulation dot1Q 11
+ ip address 10.1.11.254 255.255.255.0
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ no snmp trap link-status
+!
+interface FastEthernet0/0.55
+ description Wireless VLAN
+ encapsulation dot1Q 55
+ ip address 10.3.29.254 255.255.255.0
+ ip helper-address 10.3.28.1
+ ip redirects
+ ip proxy-arp
+ ip flow ingress
+ no snmp trap link-status
+!
+interface FastEthernet0/1
+ description WAN (CID: 1123 131 1321)
+ bandwidth 30000
+ ip address 10.1.1.250 255.255.255.0
+ ip redirects
+ ip proxy-arp
+ ip nbar protocol-discovery
+ ip flow ingress
+ ip flow egress
+ ip nat outside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+ snmp trap link-status
+ max-reserved-bandwidth 100
+ service-policy output qos-out
+!
+interface Serial0/0/0
+ no ip address
+ ip redirects
+ ip proxy-arp
+ shutdown
+ snmp trap link-status
+ no fair-queue
+ clock rate 2000000
+!
+ip classless
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 10.1.1.254
+!
+no ip http server
+ip http port 80
+ip http authentication enable
+no ip http secure-server
+ip http secure-port 443
+ip http secure-active-session-modules all
+ip http max-connections 5
+ip http timeout-policy idle 180 life 180 requests 1
+ip http active-session-modules all
+ip http digest algorithm md5
+ip http client cache memory pool 100
+ip http client cache memory file 2
+ip http client cache ager interval 5
+ip http client connection timeout 10
+ip http client connection retry 1
+ip http client connection idle timeout 30
+ip http client response timeout 30
+ip http path 
+!
+ip rtcp report interval 5000 
+ip rtcp sub-rtcp message-type 209 
+ip nat pool NAT-POOL 10.1.1.150 10.1.1.199 prefix-length 24
+ip nat inside source route-map NAT-RM pool NAT-POOL
+!
+ip access-list standard NAT-ACL
+ permit 10.1.8.0 0.0.7.255
+ip access-list standard noroutesout
+ deny   0.0.0.0
+ permit any
+!
+ip access-list extended TEST
+ permit ip host 1.1.1.1 any
+ deny   ip any any
+!
+logging history size 1
+logging history warnings
+logging trap informational
+logging delimiter tcp
+logging facility local7
+no logging source-interface
+mac-address-table aging-time 300
+cdp run
+route-map NAT-RM permit 10
+ match ip address NAT-ACL
+!
+!
+snmp-server inform retries 3 timeout 15 pending 25
+snmp mib event sample minimum 60
+snmp mib event sample instance maximum 0
+snmp mib expression delta minimum 1
+snmp mib expression delta wildcard maximum 0
+ snmp mib nhrp
+snmp mib notification-log globalsize 500
+snmp mib notification-log globalageout 15
+snmp mib community-map  ILMI engineid 8000000903000021D830DDD4
+!
+control-plane
+!
+alias exec h help
+alias exec lo logout
+alias exec p ping
+alias exec r resume
+alias exec s show
+alias exec u undebug
+alias exec un undebug
+alias exec w where
+default-value exec-character-bits 7
+default-value special-character-bits 7
+default-value data-character-bits 8
+!
+line con 0
+line aux 0
+line vty 0 4
+ transport input telnet ssh
+!
+scheduler allocate 20000 1000
+ntp server 10.1.1.1
+ntp server 10.1.1.2
+cns id hostname 
+cns id hostname event
+cns id hostname image
+cns image retry 60
+netconf max-sessions 4
+netconf lock-time 10
+netconf max-message 0
+end

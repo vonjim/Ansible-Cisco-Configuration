@@ -1,0 +1,12 @@
+---
+- hosts: pry
+  gather_facts: no
+  connection: local
+  vars_files: 
+   - group_vars/lob_details
+   - group_vars/site_details
+   - group_vars/pry_passwords
+   - group_vars/pry_vars
+  roles:
+   - baseconf
+   - router

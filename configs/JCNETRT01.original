@@ -1,0 +1,161 @@
+Building configuration...
+
+Current configuration : 2777 bytes
+!
+version 12.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname JCNETRT01
+!
+boot-start-marker
+boot-end-marker
+!
+logging message-counter syslog
+enable secret 5 $1$Fwha$IeDyUFJZE3.L88UzAZxXE1
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+!
+!
+aaa session-id common
+dot11 syslog
+ip source-route
+ip arp proxy disable
+!
+!
+no ip dhcp use vrf connected
+!
+ip dhcp pool VLAN9
+   network 10.1.9.0 255.255.255.0
+   domain-name jcnet.com.au
+   dns-server 8.8.8.8 
+   default-router 10.1.9.254 
+!
+ip dhcp pool VLAN10
+   network 10.1.10.0 255.255.255.0
+   default-router 10.1.10.254 
+   dns-server 10.1.1.254 8.8.8.8 
+   domain-name jcnet.com.au
+!
+ip dhcp pool VLAN11
+   network 10.1.11.0 255.255.255.0
+   domain-name jcnet.com.au
+   dns-server 10.1.1.254 8.8.8.8 
+   default-router 10.1.11.254 
+!
+ip dhcp pool VLAN8
+   network 10.1.8.0 255.255.255.0
+   dns-server 10.1.1.254 
+   domain-name jcnet.com.au
+   default-router 10.1.8.254 
+!
+!
+ip cef
+no ip domain lookup
+ip domain name jcnet.com.au
+ip name-server 10.1.1.254
+ip name-server 8.8.8.8
+ip name-server 8.8.8.7
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+username ******** password 0 ********
+username ******** password 0 ********
+archive
+ log config
+  hidekeys
+!
+!
+ip ssh version 2
+!
+policy-map qos-child
+policy-map qos-out
+!
+!
+!
+!
+interface FastEthernet0/0
+ no ip address
+ speed 100
+ full-duplex
+!
+interface FastEthernet0/0.5
+ encapsulation dot1Q 5
+ ip address 10.1.5.254 255.255.255.0
+!
+interface FastEthernet0/0.8
+ description DMZ_VLAN
+ encapsulation dot1Q 8
+ ip address 10.1.8.254 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+interface FastEthernet0/0.9
+ description External_VLAN
+ encapsulation dot1Q 9
+ ip address 10.1.9.254 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly
+!
+interface FastEthernet0/0.10
+ description HA_VLAN
+ encapsulation dot1Q 10
+ ip address 10.1.10.254 255.255.255.0
+!
+interface FastEthernet0/0.11
+ description Internal_VLAN
+ encapsulation dot1Q 11
+ ip address 10.1.11.254 255.255.255.0
+!
+interface FastEthernet0/1
+ ip address 10.1.1.250 255.255.255.0
+ ip nat outside
+ ip virtual-reassembly
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ no fair-queue
+ clock rate 2000000
+!
+router rip
+ version 2
+ network 10.0.0.0
+ no auto-summary
+!
+ip forward-protocol nd
+ip route 0.0.0.0 0.0.0.0 10.1.1.254
+!
+no ip http server
+no ip http secure-server
+!
+ip nat pool NAT-POOL 10.1.1.150 10.1.1.199 prefix-length 24
+ip nat inside source route-map NAT-RM pool NAT-POOL
+!
+ip access-list standard NAT-ACL
+ permit 10.1.8.0 0.0.7.255
+!
+route-map NAT-RM permit 10
+ match ip address NAT-ACL
+!
+!
+!
+control-plane
+!
+!
+line con 0
+line aux 0
+line vty 0 4
+ transport input telnet ssh
+!
+scheduler allocate 20000 1000
+end

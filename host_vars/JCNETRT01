@@ -1,18 +1,16 @@
 ---
 device_type: Router
-router_model: 2960
-device_id: 2
-ha_router: True
+device_id: 1
+ha_router: False
 routing_protocols: 
   - rip
 
 interfaces:
   - zone: wan
     intf: f0/1
-    ip_address: 10.222.27.254/30
+    ip_address:  10.1.1.250/24
     description: "WAN (CID: 1123 131 1321)"
-    bandwidth: 3000
-    speed: 100000
+    bandwidth: 30000
   - zone: lan
     intf: f0/0
     description: LAN Interface
@@ -24,20 +22,14 @@ interfaces:
           ip_address: 10.3.29.254/24
           description: Wireless VLAN
           ip_helper: 10.3.28.1
-        - vlan_number: 3
-          ip_address: 10.3.30.254/24
-          description: Legacy VLAN
-          ip_helper: 10.3.28.1
   - zone: loopback
     intf: loopback0
-    ip_address: 10.3.2.1
+    ip_address: 10.3.2.1/30
     description: "123 Fake St, Preston, VIC, 3072"
 
 site_code: MVPRES
 site_name: Preston Center
 address: "123 Fake St, Preston, VIC, 3072"
-default_gateway: 10.122.27.253
+default_gateway: 10.1.1.254
 lob: Medical Center
 lob_email: mcit@mail.com
-
-

@@ -13,7 +13,7 @@ ip route-cache flow
 {% endif %}
 
 {# Configuration common to physical interfaces where IP address is defined (WAN interface) #}
-{% if item.ip_address is defined -%}
+{% if item.ip_address is defined %}
 ip address {{ item.ip_address| ipaddr('address') }} {{ item.ip_address| ipaddr('netmask') }}
 max-reserved-bandwidth 100
 ip flow ingress
@@ -26,7 +26,9 @@ no shutdown
 {% else %} 
 no ip address 
 no shutdown
-!{% if item.vlans is defined %} 
+!
+ 
+{% if item.vlans is defined %} 
 
 {# Configure sub interfaces if they exist #}
 {% for vlan in item.vlans %}

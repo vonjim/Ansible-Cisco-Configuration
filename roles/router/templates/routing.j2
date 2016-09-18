@@ -1,18 +1,18 @@
 {% for protocol in routing_protocols %}
-router {{ protocol }}
+
 {% if protocol == 'rip' %}
+!
+router rip
 redistribute static
 version 2
-passive-interface 
+passive-interface f0/1
 network 10.0.0.0
 distribute-list noroutesout out
 default-metric 1
 no auto-summary
 {% endif %}
 !
-{% if protocol == 'bgp' %}
-ip bgp neighbour 10.1.1.1
-{% endif %}{% endfor %}
+{% endfor %}
 !
 !
 ip forward-protocol nd

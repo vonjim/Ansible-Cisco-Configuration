@@ -1,0 +1,35 @@
+---
+
+- hosts: jcnet
+  gather_facts: false
+  connection: local
+  
+  vars_files: 
+   - group_vars/pry_vars
+   - group_vars/jcnet_vars 
+  vars_prompt:
+   - name: username
+     prompt: "Username"
+     default: james
+     private: no
+   - name: password
+     prompt: "Password"
+     private: yes
+   - name: enable
+     prompt: "Enable"
+     private: yes
+
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      auth_pass: "{{ enable }}"
+      authorize: yes
+  
+  tasks:
+    - name: CREATE ACL
+      ios_template:
+        provider: "{{ cli }}"
+        src: "./roles/baseconf/templates/snmp.j2"
+        backup: true

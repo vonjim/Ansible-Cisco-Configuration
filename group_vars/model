@@ -1,0 +1,10 @@
+---
+
+2960:
+  wan_interface: f0/1
+  lan_interface: f0/0
+  min_ios: 12.4.24T
+2960G:
+  wan_interface: g0/1
+  lan_interface: g0/0
+  min_ios: 15.0.4

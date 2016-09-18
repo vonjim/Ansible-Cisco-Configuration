@@ -1,0 +1,70 @@
+service timestamps debug datetime localtime show-timezone 
+service timestamps log datetime localtime show-timezone
+service password-encryption
+hostname JCNETRT01
+!
+logging buffered 4096 debugging
+clock timezone AEST +10
+clock summer-time AEDT recurring 1 Sun Oct 2:00 1 Sun Apr 2:00
+
+username hcadmin password 7 046F03471C161D42052E55051959 
+enable secret 4 OLmARYCsUsaOP0xaCsyCtsqWwo/ZqnWqQyFi1AEjAFU
+
+aaa new-model 
+aaa authentication login default tacacs+ local 
+aaa authentication login no_tacacs none
+aaa authorization exec default tacacs+ if-authenticated
+aaa authorization exec default tacacs+ if-authenticated
+aaa authorization network default tacacs+ if-authenticated
+aaa authorization network default tacacs+ if-authenticated
+aaa accounting network default start-stop tacacs+
+aaa accounting exec default start-stop tacacs+
+aaa account commands 15 default start-stop group tacacs+
+ip tftp source-interface loopback0 
+ip domain-lookup source-interface loopback0 ip domain-list hc.int
+ip domain-list pry.com.au
+ip domain-name hc.int
+ip name-server 10.1.17.6
+ip name-server 10.1.11.6
+
+
+ntp server 10.1.1.1
+ntp server 10.1.1.2
+snmp-server community Pr1maryRO RO
+snmp-server location  MVPRES - Preston Center. 123 Fake St, Preston, VIC, 3072
+snmp-server contact Medical Center IT Support (mcit@mail.com)
+crypto key generate rsa modulus 2048
+ip ssh authentication-retries 3
+ip ssh version 2
+!
+no ip http server
+no ip http secure-server
+!
+line vty 0 4
+login authentication default
+transport input telnet ssh
+timeout login response 15
+logging synchronous
+exec-timeout 15 0
+! 
+line con 0 
+login authentication no_tacacs
+privilege level 15
+logging synchronous
+!
+tacacs server HCTACACS
+ address ipv4 10.122.254.30
+ key Pr1maryACS
+ timeout 5
+ip tacacs source-interface loopback0 
+!
+banner login ^
++------------------------------------------------------------------------+ 
+JCNETRT01
+QoS version 2.7
+Only authorised persons are allowed to access this equipment 
+Any unauthorised use is prohibited 
+For support and help, please contact: 
+
++------------------------------------------------------------------------+ 
+^

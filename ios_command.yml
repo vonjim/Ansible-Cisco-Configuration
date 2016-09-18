@@ -1,0 +1,49 @@
+---
+- hosts: jcnet
+  gather_facts: false
+  connection: local
+  
+  vars_files: 
+   - group_vars/pry_vars
+   
+  vars_prompt:
+   - name: username
+     prompt: "Username"
+     private: no
+     default: james
+   - name: password
+     prompt: "Password"
+     private: yes
+   - name: enable
+     prompt: "Enable"
+     private: yes 
+     
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      authorize: yes
+      auth_pass: "{{ enable }}"
+  
+  tasks:
+    - name: COPY TFTP to FLASH
+      ios_command:
+        provider: "{{ cli }}"
+        commands:
+          - copy tftp flash
+          - 10.1.1.107
+          - jcnetrt01-confg
+          - jcnetrt01-confg
+
+
+    - name: SEND COMMAND TO DEVICE
+      ios_command:
+        provider: "{{ cli }}"
+        commands: 
+          - "verify /md5 flash:c1841-ipbasek9-mz.124-24.T5.bin b0296f4b879510c169296420e0a177d5j"
+      register: output
+    
+
+    - debug: msg=Succeeded
+      when: output|succeeded

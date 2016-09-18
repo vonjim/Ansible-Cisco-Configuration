@@ -1,0 +1,56 @@
+ip cef
+! 
+! Policy-map placeholders.  Written over at config compilation
+policy-map qos-child
+policy-map qos-out
+
+ip arp proxy disable
+
+!
+!
+interface f0/1
+  description WAN (CID: 1123 131 1321)
+  ip address 10.1.1.250 255.255.255.0
+  
+  speed 100000
+  duplex auto
+  ip route-cache flow 
+  bandwidth 30000no shutdown
+  max-reserved-bandwidth 100
+  ip flow ingress
+  ip flow egress
+  ip nbar protocol-discovery 
+  service-policy output qos-out 
+!
+!
+interface f0/0
+  description LAN Interface
+  no ip address
+  
+  speed auto
+  duplex auto
+  ip route-cache flow 
+  no shutdown
+!
+!
+interface f0/0.5
+  ip address 10.3.28.254 255.255.255.0
+  description Data VLAN
+  encapsulation dot1Q 5 
+  service-policy input qos-in 
+  
+  !
+!
+interface f0/0.55
+  ip address 10.3.29.254 255.255.255.0
+  description Wireless VLAN
+  encapsulation dot1Q 55 
+  service-policy input qos-in 
+  ip helper-address 10.3.28.1
+  !
+!
+interface loopback0
+  description 123 Fake St, Preston, VIC, 3072
+  ip address 10.3.2.1 
+  
+

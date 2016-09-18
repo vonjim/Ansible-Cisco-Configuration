@@ -1,0 +1,63 @@
+---
+
+- hosts: jcnet
+  gather_facts: false
+  connection: local
+  
+  vars_files: 
+   - group_vars/pry_vars
+   - group_vars/jcnet_vars   
+  vars_prompt:
+   - name: enable
+     prompt: "Enable"
+     private: yes
+
+  vars:
+    cli:
+      host: "{{ inventory_hostname }}"
+      username: "james"
+      password: "james"
+      auth_pass: "{{ enable }}"
+      authorize: yes
+  
+  tasks:
+    - name: CREATE ACL
+      ios_config:
+        provider: "{{ cli }}"
+        lines: 
+          - 10 permit ip host 1.1.1.1 any
+          - 20 deny ip any any
+        parents: ip access-list extended TEST
+        before: no ip access-list extended TEST
+        match: exact
+    
+    - name: SEND CONFIGURATION TO DEVICE
+      ios_command:
+        provider: "{{ cli }}"
+        commands:
+          - show ip access-lists TEST
+      register: show_access_list
+    
+    - debug: var=show_access_list.stdout
+    
+    - name: CREATE BGP NEIGHBOUR AND NETWORK
+      ios_config:
+        provider: "{{ cli }}"
+        parents: 
+          - router bgp 1
+          - address-family ipv4
+        lines: 
+          - no network 10.3.6.9
+          - no neighbor 10.3.6.6 remote-as 12
+          - network 10.3.8.0
+        match: exact
+      notify: 
+        - Save config
+        
+  handlers: 
+    - name: Save config
+      ios_command:
+        provider: "{{ cli }}"
+        commands: wr
+      register: save_config
+    
